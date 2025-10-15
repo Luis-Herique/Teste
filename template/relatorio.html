@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório - Bullying & Cyberbullying</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">Bullying & Cyberbullying</a>
+            <a class="btn btn-light" href="/">Voltar ao Site</a>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Relatório de Denúncias</h1>
+        
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h3>{{ total_denuncias }}</h3>
+                        <p>Total de Denúncias</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h3>{{ bullying_count }}</h3>
+                        <p>Casos de Bullying</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h3>{{ cyberbullying_count }}</h3>
+                        <p>Casos de Cyberbullying</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h3>{{ "%.1f"|format(taxa_anonimato) }}%</h3>
+                        <p>Denúncias Anônimas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Locais Mais Comuns</h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for local, count in locais_mais_comuns.items() %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ local }}
+                        <span class="badge bg-primary rounded-pill">{{ count }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>Todas as Denúncias</h3>
+            </div>
+            <div class="card-body">
+                {% if denuncias %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tipo</th>
+                                <th>Data</th>
+                                <th>Local</th>
+                                <th>Anônimo</th>
+                                <th>Data Registro</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for denuncia in denuncias %}
+                            <tr>
+                                <td>{{ denuncia.id }}</td>
+                                <td>{{ denuncia.tipo }}</td>
+                                <td>{{ denuncia.data_ocorrencia.strftime('%d/%m/%Y') }}</td>
+                                <td>{{ denuncia.local }}</td>
+                                <td>{{ 'Sim' if denuncia.anonimo else 'Não' }}</td>
+                                <td>{{ denuncia.data_registro.strftime('%d/%m/%Y %H:%M') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-center">Nenhuma denúncia registrada ainda.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
